@@ -1,11 +1,16 @@
 import numpy as np
 
-class Hxcopter:
+class Hexacopter:
     """Linearized simulation model of Hexacopter.
 
      Integration of the equation of motion for updating the state vector is calculated with Runge-Kutta method.
      The control signal is the rotor command vector.
      """
+
+    VERTICAL = 0
+    ROLL     = 1
+    PITCH    = 2
+    YAW      = 3
 
     g = 9.81 # gravity coefficient [ m/s^2]
     m = 2.1 # mass [kg]
@@ -147,7 +152,8 @@ class Hxcopter:
             self.rotors[i].set_speed(cmds[i])
 
 
-########################################
+# =========================================================================== #
+
 
 class Rotor:
     """Simulation model of the response of the rotor speed.
