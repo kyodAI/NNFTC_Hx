@@ -1,0 +1,4 @@
+*.gz
+.idea
+*.ipynb
+venv
