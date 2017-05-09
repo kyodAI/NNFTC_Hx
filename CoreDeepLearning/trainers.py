@@ -30,6 +30,34 @@ class OnlineTrainer:
         model.update_weights(optimizer)
         return J, dJdy
 
+    def train_one_forward(self, model, x, target, loss, optimizer, show_progress=False):
+        y = model.forward(x, is_training=True)
+        J = loss.calc_loss(y, target)
+        dJdy = loss.calc_gradient(y, target)
+        model.backward(dJdy)
+        model.update_weights(optimizer)
+        return y, J, dJdy
+
+class NeuralControl(OnlineTrainer):
+
+    def __init__(self,model, loss,optimizer):
+        """
+
+        """
+        self.model = model
+        self.loss = loss
+        self.optimizer = optimizer
+
+    def fit(self,x,y):
+        return self.train_one_forward(model=self.model, x=x, target=y,loss=self.loss,optimizer=self.optimizer)[0]
+
+    def save_model(self,ofile):
+
+        self.model.save_to_file(ofile)
+
+    def predict(self,x):
+        return self.model.forward(x,is_training=False)
+
 
 class PlottableTrainer:
     def __init__(self):
