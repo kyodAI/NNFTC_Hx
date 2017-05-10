@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn import datasets
 
-import CoreDeepLearning.syntax
+import CoreDeepLearning.syntax as syntax
 from CoreDeepLearning.layers import Linear, Sigmoid, Softmax, Dropout, Relu, Tanh, RegularizedLinear, \
     CheapTanh, SyntaxLayer
 from CoreDeepLearning.loss import SquaredLoss, CrossEntropyLoss, ClaudioMaxNLL, NLL
@@ -26,6 +26,10 @@ def gen_data(n=300, dataset='clusters'):
             n_samples=n, shuffle=True, noise=0.1, random_state=None, factor=0.1)
     elif dataset == 'moons':
         data, targets = datasets.make_moons(n_samples=n, shuffle=True, noise=0.2)
+    elif dataset == 'regression':
+        data, targets = datasets.make_regression(n_samples=1000,n_features=2,n_informative=2,n_targets=1,bias=10000)
+
+
 
     train_data, valid_data, test_data = partition(data, 3)
     train_targets, valid_targets, test_targets = partition(targets, 3)
@@ -92,22 +96,24 @@ def plot_mean_loss(x):
 
 class PerceptronExperiment:
     def run(self):
-        train_set, valid_set, test_set = gen_data(dataset='circles')
+        train_set, valid_set, test_set = gen_data(dataset='regression')
 
+        print test_set
+        exit()
         l1 = 0.
         l2 = 0.
-        # model = Seq([
-        #     Linear(2, 100),
-        #     # Dropout(0.8),
-        #     Tanh(),
-        #     Linear(100, 4),
-        #     # Tanh(),
-        #     # Dropout(0.6)
-        # ])
-
-        model = SyntaxLayer(
-            syntax.Linear(10, 4, input=
-                syntax.Tanh(syntax.Linear(2, 10, input=syntax.Var('x')))))
+        model = Seq([
+            Linear(2, 100),
+            # Dropout(0.8),
+            Tanh(),
+            Linear(100, 4),
+            # Tanh(),
+            # Dropout(0.6)
+        ])
+        #
+        # model = SyntaxLayer(
+        #     syntax.Linear(10, 4,
+        #         syntax.Tanh(syntax.Linear(2, 10, input=syntax.Var('x')))))
 
         # trainer = SimpleTrainer()
         # trainer.train(model, train_set,
@@ -126,9 +132,13 @@ class PerceptronExperiment:
         mean_losses = trainer.train_minibatches(model, train_set,
                                                 batch_size,
                                                 epochs=100,
-                                                loss=CrossEntropyLoss(),
+                                                loss=SquaredLoss(),
                                                 optimizer=MomentumSGD(learning_rate, momentum=0.4),
                                                 show_progress=True)
+
+
+
+
 
         # trainer = PatienceTrainer()
         # mean_losses = trainer.train(model, train_set, valid_set, test_set,

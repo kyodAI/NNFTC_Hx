@@ -7,7 +7,9 @@ import os
 from CoreDeepLearning.utils import chunks
 
 
-class OnlineTrainer:
+class OnlineTrainer(object):
+
+
     def train(self, model, train_set, loss, epochs, optimizer, show_progress=False, save_progress=False):
         """This is "online learning": we backpropagate and update after forwarding one input data at the time."""
         epochs_losses = []
@@ -47,6 +49,7 @@ class NeuralControl(OnlineTrainer):
         self.model = model
         self.loss = loss
         self.optimizer = optimizer
+        super(NeuralControl, self)
 
     def fit(self,x,y):
         return self.train_one_forward(model=self.model, x=x, target=y,loss=self.loss,optimizer=self.optimizer)[0]
@@ -57,6 +60,9 @@ class NeuralControl(OnlineTrainer):
 
     def predict(self,x):
         return self.model.forward(x,is_training=False)
+
+    def train(self,train_set,epochs):
+        return super(NeuralControl, self).train(model=self.model, train_set=train_set, loss=self.loss, epochs=epochs, optimizer=self.optimizer)
 
 
 class PlottableTrainer:

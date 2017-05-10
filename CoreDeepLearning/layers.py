@@ -72,8 +72,8 @@ class RegularizedLinear(Linear):
 
     def calc_update_gradient(self, dJdy):
         grad = super(RegularizedLinear, self).calc_update_gradient(dJdy)
-        l1_reg = self.l1 * np.sign(self.W)
-        l2_reg = self.l2 * self.W
+        l1_reg = self.l1 * np.sign(self.W.get())
+        l2_reg = self.l2 * self.W.get()
         return grad + l1_reg + l2_reg
 
 

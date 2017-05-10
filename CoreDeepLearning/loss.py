@@ -1,8 +1,7 @@
 import numpy as np
-
+from sklearn.metrics import mean_squared_error
 from CoreDeepLearning.layers import Softmax
 from CoreDeepLearning.utils import make_one_hot_target
-
 
 class SquaredLoss:
     def calc_loss(self, y, target):
@@ -12,6 +11,17 @@ class SquaredLoss:
     def calc_gradient(self, y, target):
         dJdy = (y - target)
         return dJdy
+
+
+
+class MSE:
+
+    def calc_loss(self,y,target):
+        return mean_squared_error([y],[target])
+    def calc_gradient(self, y, target):
+        dJdy = (y - target)
+        return dJdy
+
 
 
 class NegLogLikelihoodLoss:

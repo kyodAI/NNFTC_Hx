@@ -1,6 +1,6 @@
 import numpy as np
 
-import CoreDeepLearning.syntax
+import CoreDeepLearning.syntax as syntax
 from CoreDeepLearning.layers import MatrixWeight, VectorWeight
 from CoreDeepLearning.rnn.rnn import RNN
 from CoreDeepLearning.shared import SharedMemory
