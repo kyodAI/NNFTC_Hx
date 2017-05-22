@@ -26,7 +26,7 @@ class Serializable:
     @staticmethod
     def load_from_file(file_name):
         print('Loading model from file...')
-        with open(file_name, 'r') as f:
+        with open(file_name, 'rb') as f:
             model = pickle.load(f)
             print('Loaded')
             return model
